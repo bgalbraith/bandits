@@ -1,12 +1,13 @@
 import numpy as np
-import scipy.misc as misc
+import pymc3 as pm
 
 
 class MultiArmedBandit(object):
-    def __init__(self, k, rewards=None, labels=None):
+    """
+    A Multi-armed Bandit
+    """
+    def __init__(self, k):
         self.k = k
-        self.rewards = rewards
-        self.labels = labels
         self.action_values = np.zeros(k)
         self.optimal = 0
 
@@ -19,8 +20,12 @@ class MultiArmedBandit(object):
 
 
 class GaussianBandit(MultiArmedBandit):
-    def __init__(self, k, labels=None, mu=0, sigma=1):
-        super(GaussianBandit, self).__init__(k, labels)
+    """
+    Gaussian bandits model the reward of a given arm as normal distribution with
+    provided mean and standard deviation.
+    """
+    def __init__(self, k, mu=0, sigma=1):
+        super(GaussianBandit, self).__init__(k)
         self.mu = mu
         self.sigma = sigma
         self.reset()
@@ -36,42 +41,21 @@ class GaussianBandit(MultiArmedBandit):
 
 class BinomialBandit(MultiArmedBandit):
     """
-    Binomial bandits model the probability of a single event occurring given N
-    trials i.e. get heads on N coin flips
+    The Binomial distribution models the probability of an event occurring with
+    p probability k times over N trials i.e. get heads on a p-coin k times on
+    N flips.
 
-    Action Value -> [0, 1]
-    Reward -> {0, N}
+    In the bandit scenario, this can be used to approximate a discrete user
+    rating or "strength" of response to a single event.
     """
-    def __init__(self, k, n, labels=None):
-        super(BinomialBandit, self).__init__(k, labels)
+    def __init__(self, k, n, p=None):
+        super(BinomialBandit, self).__init__(k)
         self.n = n
-        self.reset()
-
-    def reset(self):
-        k = misc.comb(self.n, range(self.n+1))
-        self.action_values = np.random.uniform(size=self.k)
-        self.optimal = np.argmax(self.action_values)
-
-    def pull(self, action):
-
-        return (float(np.random.random() < self.action_values[action]),
-                action == self.optimal)
-
-
-class BernoulliBandit(MultiArmedBandit):
-    """
-    Bernoulli bandits model the probability of a single event occurring given a
-    single trial i.e. get heads on a coin flip
-
-    A bandit arm corresponds to a hit or miss -- either you get a payout or you
-    don't.
-
-    Action Value -> [0, 1]
-    """
-    def __init__(self, k, p=None, rewards=None, labels=None):
-        super(BernoulliBandit, self).__init__(k, rewards, labels)
         self.p = p
-        self.rewards = np.ones(k)
+        self.model = pm.Model()
+        with self.model:
+            self.bin = pm.Binomial('binomial', n=n*np.ones(k, dtype=np.int),
+                                   p=np.ones(k)/n, shape=(1, k), transform=None)
         self.reset()
 
     def reset(self):
@@ -79,21 +63,22 @@ class BernoulliBandit(MultiArmedBandit):
             self.action_values = np.random.uniform(size=self.k)
         else:
             self.action_values = self.p
-        self.optimal = np.argmax(self.action_values*self.rewards)
+        self.bin.distribution.p = self.action_values
+        self.optimal = np.argmax(self.action_values)
 
     def pull(self, action):
-        hit = int(np.random.random() < self.action_values[action])
-        return hit*self.rewards[action], action == self.optimal
+        vals = self.bin.random()
+        return vals[action], action == self.optimal
 
 
-class CategoricalBandit(MultiArmedBandit):
+class BernoulliBandit(BinomialBandit):
     """
-    Categorical bandits model the probability of one of a set of N events
-    occurring given a single trial i.e. get j on a k-sided die roll
+    The Bernoulli distribution models the probability of a single event
+    occurring with p probability i.e. get heads on a single p-coin flip. This is
+    the special case of the Binomial distribution where N=1.
 
-    Action Value -> {[0, 1], [0, 1], ..., [0, 1]}, sum(AV) = 1
-    Reward -> {{0, 1}, {0, 1}, ..., {0, 1}}
+    In the bandit scenario, this can be used to approximate a hit or miss event,
+    such as if a user clicks on a headline, ad, or recommended product.
     """
-    def __init__(self, k, labels=None):
-        super(CategoricalBandit, self).__init__(k, labels)
-        self.reset()
+    def __init__(self, k, p=None):
+        super(BernoulliBandit, self).__init__(k, 1, p=p)
