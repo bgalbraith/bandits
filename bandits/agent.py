@@ -56,6 +56,9 @@ class GradientAgent(Agent):
         self.baseline = baseline
         self.average_reward = 0
 
+    def __str__(self):
+        return 'g/\u03B1={}, bl={}'.format(self.alpha, self.baseline)
+
     def observe(self, reward):
         self.action_attempts[self.last_action] += 1
 
