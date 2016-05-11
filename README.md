@@ -11,6 +11,10 @@ Implements the following algorithms:
   * Bernoulli, Binomial <=> Beta Distributions
 
 # References
+### Wikipedia
+* [Multi-Armed Bandit](https://en.wikipedia.org/wiki/Multi-armed_bandit)
+* [Conjugate Prior](https://en.wikipedia.org/wiki/Conjugate_prior)
+
 ### Blog Posts
 * [Bandits for Recommendation Systems](http://engineering.richrelevance.com/bandits-recommendation-systems/)
 * [Recommendations with Thompson Sampling](http://engineering.richrelevance.com/recommendations-thompson-sampling/)
@@ -28,5 +32,7 @@ Implements the following algorithms:
 ### Academic Articles
 * [A Survey on Contextual Multi-armed Bandits](http://arxiv.org/abs/1508.03326)
 
-### Software
+### Software / Tools
+* [Bayesian Bandit Explorer (simulation)](https://e76d6ebf22ef8d7e079810f3d1f82ba1e5f145d5.googledrive.com/host/0B2GQktu-wcTiWDB2R2t2a2tMUG8/)
 * [Yelp MOE](http://yelp.github.io/MOE/bandit.html)
+* [Bandit Algorithms for Website Optimization (code)](https://github.com/johnmyleswhite/BanditsBook)
