@@ -8,11 +8,12 @@ class Agent(object):
     action is chosen using a strategy based on the history of prior actions
     and outcome observations.
     """
-    def __init__(self, bandit, policy, prior=0):
+    def __init__(self, bandit, policy, prior=0, gamma=None):
         self.policy = policy
         self.k = bandit.k
         self.prior = prior
-        self.value_estimates = prior*np.ones(self.k)
+        self.gamma = gamma
+        self._value_estimates = prior*np.ones(self.k)
         self.action_attempts = np.zeros(self.k)
         self.t = 0
         self.last_action = None
@@ -24,7 +25,7 @@ class Agent(object):
         """
         Resets the agent's memory to an initial state.
         """
-        self.value_estimates[:] = self.prior
+        self._value_estimates[:] = self.prior
         self.action_attempts[:] = 0
         self.last_action = None
         self.t = 0
@@ -37,11 +38,18 @@ class Agent(object):
     def observe(self, reward):
         self.action_attempts[self.last_action] += 1
 
-        n = self.action_attempts[self.last_action]
-        q = self.value_estimates[self.last_action]
+        if self.gamma is None:
+            g = 1 / self.action_attempts[self.last_action]
+        else:
+            g = self.gamma
+        q = self._value_estimates[self.last_action]
 
-        self.value_estimates[self.last_action] += (1/n)*(reward - q)
+        self._value_estimates[self.last_action] += g*(reward - q)
         self.t += 1
+
+    @property
+    def value_estimates(self):
+        return self._value_estimates
 
 
 class GradientAgent(Agent):
@@ -85,24 +93,27 @@ class BetaAgent(Agent):
      or Binomial likelihood, as these distributions have a Beta distribution as
      a conjugate prior.
     """
-    def __init__(self, bandit, strategy, ts=True):
-        super(BetaAgent, self).__init__(bandit, strategy)
+    def __init__(self, bandit, policy, ts=True):
+        super(BetaAgent, self).__init__(bandit, policy)
         self.n = bandit.n
         self.ts = ts
         self.model = pm.Model()
         with self.model:
-            self.prior = pm.Beta('prior', alpha=np.ones(self.k),
-                                 beta=np.ones(self.k), shape=(1, self.k),
-                                 transform=None)
+            self._prior = pm.Beta('prior', alpha=np.ones(self.k),
+                                  beta=np.ones(self.k), shape=(1, self.k),
+                                  transform=None)
         self._value_estimates = np.zeros(self.k)
 
     def __str__(self):
-        return 'b/{}'.format(str(self.policy))
+        if self.ts:
+            return 'b/TS'
+        else:
+            return 'b/{}'.format(str(self.policy))
 
     def reset(self):
         super(BetaAgent, self).reset()
-        self.prior.distribution.alpha = np.ones(self.k)
-        self.prior.distribution.beta = np.ones(self.k)
+        self._prior.distribution.alpha = np.ones(self.k)
+        self._prior.distribution.beta = np.ones(self.k)
 
     def observe(self, reward):
         self.action_attempts[self.last_action] += 1
@@ -111,19 +122,15 @@ class BetaAgent(Agent):
         self.beta[self.last_action] += self.n - reward
 
         if self.ts:
-            self._value_estimates = self.prior.random()
+            self._value_estimates = self._prior.random()
         else:
             self._value_estimates = self.alpha / (self.alpha + self.beta)
         self.t += 1
 
     @property
-    def value_estimates(self):
-        return self._value_estimates
-
-    @property
     def alpha(self):
-        return self.prior.distribution.alpha
+        return self._prior.distribution.alpha
 
     @property
     def beta(self):
-        return self.prior.distribution.beta
+        return self._prior.distribution.beta
