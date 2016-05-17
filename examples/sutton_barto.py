@@ -2,14 +2,11 @@
 Multi-armed Bandit examples taken from Reinforcement Learning: An Introduction
 by Sutton and Barto, 2nd ed. rev Oct2015.
 """
-import matplotlib
-matplotlib.use('qt4agg')
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-
-from bandits import (GaussianBandit, Agent, GradientAgent, EpsilonGreedyPolicy,
-                     GreedyPolicy, UCBPolicy, SoftmaxPolicy)
+from bandits.environment import Environment
+from bandits.bandit import GaussianBandit
+from bandits.agent import Agent, GradientAgent
+from bandits.policy import (EpsilonGreedyPolicy, GreedyPolicy, UCBPolicy,
+                            SoftmaxPolicy)
 
 
 class EpsilonGreedyExample:
@@ -54,44 +51,13 @@ class GradientExample:
 
 if __name__ == '__main__':
     experiments = 500
-    time_steps = 1000
+    trials = 1000
 
     example = EpsilonGreedyExample
     # example = OptimisticInitialValueExample
     # example = UCBExample
     # example = GradientExample
 
-    bandit = example.bandit
-    agents = example.agents
-
-    scores = np.zeros((len(agents), time_steps))
-    optimal = np.zeros((len(agents), time_steps))
-
-    for _ in range(experiments):
-        bandit.reset()
-        for agent in agents:
-            agent.reset()
-        for t in range(time_steps):
-            for i, agent in enumerate(agents):
-                action = agent.choose()
-                reward, is_optimal = bandit.pull(action)
-                agent.observe(reward)
-
-                scores[i, t] += reward
-                if is_optimal:
-                    optimal[i, t] += 1
-
-    sns.set_style('white')
-    plt.subplot(2, 1, 1)
-    plt.title(example.label)
-    plt.plot(scores.T / experiments)
-    plt.ylabel('Average Reward')
-    plt.legend(agents, loc=4)
-    plt.subplot(2, 1, 2)
-    plt.plot(optimal.T / experiments * 100)
-    plt.ylim(0, 100)
-    plt.ylabel('% Optimal Action')
-    plt.xlabel('Time Step')
-    plt.legend(agents, loc=4)
-    sns.despine()
-    plt.show()
+    env = Environment(example.bandit, example.agents, example.label)
+    scores, optimal = env.run(trials, experiments)
+    env.plot_results(scores, optimal)
