@@ -78,8 +78,8 @@ class GradientAgent(Agent):
 
         ht = self.value_estimates[self.last_action]
         ht += self.alpha*(reward - self.average_reward)*(1-pi[self.last_action])
-        self.value_estimates -= self.alpha*(reward - self.average_reward)*pi
-        self.value_estimates[self.last_action] = ht
+        self._value_estimates -= self.alpha*(reward - self.average_reward)*pi
+        self._value_estimates[self.last_action] = ht
         self.t += 1
 
     def reset(self):
