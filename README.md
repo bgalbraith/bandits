@@ -8,6 +8,9 @@ Implements the following algorithms:
 * Thompson Sampling (Bayesian)
   * Bernoulli, Binomial <=> Beta Distributions
 
+# Examples
+* [Value Estimation Methods](https://github.com/bgalbraith/bandits/tree/master/notebooks/Stochastic%20Bandits%20-%20Value%20Estimation.ipynb)
+
 # References
 ### Wikipedia
 * [Multi-Armed Bandit](https://en.wikipedia.org/wiki/Multi-armed_bandit)
