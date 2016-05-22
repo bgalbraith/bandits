@@ -1,4 +1,4 @@
-# bandits
+# Bandits
 Python library for Multi-Armed Bandits
 
 Implements the following algorithms:
@@ -24,6 +24,9 @@ Implements the following algorithms:
 * [Mulit-Armed Bandits](https://dataorigami.net/blogs/napkin-folding/79031811-multi-armed-bandits)
 * [Bayesian Bandits](http://tdunning.blogspot.de/2012/02/bayesian-bandits.html)
 * [Python Multi-armed Bandits (and Beer!)](http://blog.yhat.com/posts/the-beer-bandit.html)
+
+### Presentations
+* [ODSC East 2016 - Bayesian Bandits](https://goo.gl/TJt8sG)
 
 ### Books and Book Chapters
 * [Reinforcement Learning: An Introduction](https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html)
