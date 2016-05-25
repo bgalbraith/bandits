@@ -17,6 +17,8 @@ Implements the following algorithms:
 * [Conjugate Prior](https://en.wikipedia.org/wiki/Conjugate_prior)
 
 ### Blog Posts
+* [Bandit theory, part I](https://blogs.princeton.edu/imabandit/2016/05/11/bandit-theory-part-i/)
+* [Bandit theory, part II](https://blogs.princeton.edu/imabandit/2016/05/13/bandit-theory-part-ii/)
 * [Bandits for Recommendation Systems](http://engineering.richrelevance.com/bandits-recommendation-systems/)
 * [Recommendations with Thompson Sampling](http://engineering.richrelevance.com/recommendations-thompson-sampling/)
 * [Personalization with Contextual Bandits](http://engineering.richrelevance.com/personalization-contextual-bandits/)
@@ -27,6 +29,7 @@ Implements the following algorithms:
 
 ### Presentations
 * [ODSC East 2016 - Bayesian Bandits](https://goo.gl/TJt8sG)
+* [NYC ML Meetup 2010 - Learning for Contextual Bandits](http://hunch.net/~exploration_learning/main.pdf)
 
 ### Books and Book Chapters
 * [Reinforcement Learning: An Introduction](https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html)
