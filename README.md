@@ -41,6 +41,6 @@ Implements the following algorithms:
 * [A Survey on Contextual Multi-armed Bandits](http://arxiv.org/abs/1508.03326)
 
 ### Software / Tools
-* [Bayesian Bandit Explorer (simulation)](https://e76d6ebf22ef8d7e079810f3d1f82ba1e5f145d5.googledrive.com/host/0B2GQktu-wcTiWDB2R2t2a2tMUG8/)
+* [Bayesian Bandit Explorer (simulation)](https://learnforeverlearn.com/bandits/)
 * [Yelp MOE](http://yelp.github.io/MOE/bandit.html)
 * [Bandit Algorithms for Website Optimization (code)](https://github.com/johnmyleswhite/BanditsBook)
