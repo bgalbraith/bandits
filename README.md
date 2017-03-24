@@ -9,7 +9,9 @@ Implements the following algorithms:
   * Bernoulli, Binomial <=> Beta Distributions
 
 # Examples
+* [Bayesian Belief](https://github.com/bgalbraith/bandits/tree/master/notebooks/Stochastic%20Bandits%20-%20Bayesian%20Belief.ipynb)
 * [Value Estimation Methods](https://github.com/bgalbraith/bandits/tree/master/notebooks/Stochastic%20Bandits%20-%20Value%20Estimation.ipynb)
+* [Preference Estimation](https://github.com/bgalbraith/bandits/tree/master/notebooks/Stochastic%20Bandits%20-%20Preference%20Estimation.ipynb)
 
 # References
 ### Wikipedia
@@ -17,6 +19,7 @@ Implements the following algorithms:
 * [Conjugate Prior](https://en.wikipedia.org/wiki/Conjugate_prior)
 
 ### Blog Posts
+* [When to Run Bandit Tests Instead of A/B/n Tests](https://conversionxl.com/bandit-tests/)
 * [Bandit theory, part I](https://blogs.princeton.edu/imabandit/2016/05/11/bandit-theory-part-i/)
 * [Bandit theory, part II](https://blogs.princeton.edu/imabandit/2016/05/13/bandit-theory-part-ii/)
 * [Bandits for Recommendation Systems](http://engineering.richrelevance.com/bandits-recommendation-systems/)
@@ -28,6 +31,7 @@ Implements the following algorithms:
 * [Python Multi-armed Bandits (and Beer!)](http://blog.yhat.com/posts/the-beer-bandit.html)
 
 ### Presentations
+* [Boston Bayesians Meetup 2016 - Bayesian Bandits From Scratch](https://sites.google.com/site/simplebayes/home/boston-bayesians)
 * [ODSC East 2016 - Bayesian Bandits](https://goo.gl/TJt8sG)
 * [NYC ML Meetup 2010 - Learning for Contextual Bandits](http://hunch.net/~exploration_learning/main.pdf)
 
