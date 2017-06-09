@@ -30,7 +30,7 @@ class EpsilonGreedyPolicy(Policy):
             return np.random.choice(len(agent.value_estimates))
         else:
             action = np.argmax(agent.value_estimates)
-            check = np.where(agent.value_estimates == action)[0]
+            check = np.where(agent.value_estimates == agent.value_estimates[action])[0]
             if len(check) == 0:
                 return action
             else:
@@ -82,7 +82,7 @@ class UCBPolicy(Policy):
 
         q = agent.value_estimates + exploration
         action = np.argmax(q)
-        check = np.where(q == action)[0]
+        check = np.where(q == q[action])[0]
         if len(check) == 0:
             return action
         else:
