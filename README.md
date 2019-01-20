@@ -8,6 +8,15 @@ Implements the following algorithms:
 * Thompson Sampling (Bayesian)
   * Bernoulli, Binomial <=> Beta Distributions
 
+## Installation
+You can install `bandits` with:
+
+```
+git clone https://github.com/bgalbraith/bandits.git
+cd bandits
+pip install .
+```
+
 # Examples
 * [Bayesian Belief](https://github.com/bgalbraith/bandits/tree/master/notebooks/Stochastic%20Bandits%20-%20Bayesian%20Belief.ipynb)
 * [Value Estimation Methods](https://github.com/bgalbraith/bandits/tree/master/notebooks/Stochastic%20Bandits%20-%20Value%20Estimation.ipynb)
